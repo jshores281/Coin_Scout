@@ -1,0 +1,144 @@
+#!/Python 
+# DIGITAL COIN SCOUT #
+###############################################################################
+###############################################################################
+# FEATURES TO ADD 
+
+
+# 12/16/2021
+# [ ] - add multiple coins to monitor-mode
+#
+# [ ] - add percentage difference 
+#	formula: 
+#		idv = nv - ov
+#		ddv = idv / ov
+#		pd = ddv * 100
+#		check
+#		nvalue == ov + ddv * ov
+#		OR
+#		cp = ((nv-ov)/ov)*100
+#
+
+
+
+#
+# [X] - user defined deviation points (+/- 1,000$ = send alert)
+#		 if coin_price is + or - 1000:
+#			notify_user()
+#			update_static_price_comparison()
+#
+# [X] - MAKE ORIGINAL TIME STAMP / IF SERVER REFUSES SEND NOTIFICATION
+#
+# [X] - MAKE TIME CHECK VARIABLE
+#
+# [~] - (GUI) ability to add or remove coins (ids=INPUT_VARIABLE/SCRAPED_VARIABLE)
+#
+# [!~] - ability to add mutliple coin names
+#
+# [!~] - add more than one user to be notified (multiple send address's)
+#			is inconsistent with at&t mms gateway (doesnt work with sms gateway)
+#
+# [~] - make CLI model
+#
+# [X] - turn into generator infinite loop
+###############################################################################
+# ISSUE: connect reset errors WinError 10054
+# MECH:
+# [X] - infinit looping generator (keeps program running)
+#
+# [X] - periodic server connect checks 
+#
+# [X] - if check connects to server then get data & close connections then manipulate data
+#			(creates fewer API calls)
+#			
+# [X] - if times out then wait & restart
+#
+# [X] - LOOP!
+###############################################################################
+###############################################################################
+# free public API to all coins
+# https://api.coingecko.com/api/v3/
+# hello+api@coingecko.com
+###############################################################################
+
+
+
+
+
+
+
+
+
+
+"""
+###############################################################
+# CODE YARD    #############################
+###############################################################
+
+
+
+
+
+
+
+
+# actual code:
+#		cp = ((float(VALUE0)-float(VALUE))/float(VALUE0))*100
+#		if cp < 0:
+#			cp = (f"or by %{cp}")
+#		if cp > 0:
+#			cp = (f"or by %{cp}")
+
+
+
+
+
+
+
+
+
+
+
+
+# gets list of coins on exchange and supported currencies
+
+
+# ERROR HANDLING OF WRONG COIN ENTERED
+def run():
+	try:
+		
+	except (AttributeError):
+		print("NO COIN FOUND; re-run program")
+		return mon_run()
+	return mon_run()
+run()
+
+
+raise ConnectionError(err, request=request)
+requests.exceptions.ConnectionError: ('Connection aborted.', ConnectionResetError(10054, 'An existing connection was forcibly closed by the remote host', None, 10054, None))
+
+
+
+
+coins = cg.get_coins_list()
+for coin in enumerate(coins):
+	print(coin)
+
+input("stop")
+
+sup_curs = cg.get_supported_vs_currencies()
+for curs in enumerate(sup_curs):
+	print(curs)
+
+input("stop")
+
+
+# CODE YARD
+
+
+				
+#price_num3 = [btcvalue[btckey] for btcvalue in btc_price
+#print(price_num3)
+	
+
+"""
