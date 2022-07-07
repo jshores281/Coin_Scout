@@ -29,7 +29,7 @@ def coinprice(coin_price):
 		time.sleep(1)
 		price1 = coin_price.get(cred_enter.COIN[:])
 		VALUE = price1.get(cred_enter.CURRENCY[:])
-	# find percentage difference or compare to percentage increase 
+		# find percentage difference or compare to percentage increase 
 
 		if VALUE > VALUE0 + cred_enter.PRICE_POINT:
 			INC_PRICE = VALUE-VALUE0
@@ -37,7 +37,6 @@ def coinprice(coin_price):
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
 				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-INCREASED BY: \n%s or +%s%s \n~~~SELL~~~ \n" % (COIN_NAME2,VALUE0,INC_PRICE,cp,perc)
-
 			try:
 				coin_price = cg.get_price(ids=cred_enter.COIN, vs_currencies=cred_enter.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_enter.COIN[:])
@@ -68,14 +67,12 @@ def coinprice(coin_price):
 					file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con313}\n[DETAILS]::{S_DTAILS}\n')
 				print(f'{dis_con313}')
 
-
 		if VALUE < VALUE0 - cred_enter.PRICE_POINT:
 			DEC_PRICE = VALUE0-VALUE
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
 				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-DECREASED BY: \n%s or %s%s \n~~~BUY~~~ \n" % (COIN_NAME2,VALUE0,DEC_PRICE,cp,perc)
-
 			try:
 				coin_price = cg.get_price(ids=cred_enter.COIN, vs_currencies=cred_enter.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_enter.COIN[:])
@@ -85,7 +82,6 @@ def coinprice(coin_price):
 				#STATUS_UPDATE = (f'{PRICE_REPORT}{PRICE_UPDATE}')
 				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
 					f'ATTEMPING TO SEND PRICE ALERT MSG')
-				
 				SUBJECT = str(f"COIN SCOUTING: {COIN_NAME2} \n\n")
 				BODY = str(PRICE_REPORT + PRICE_UPDATE)
 				notify_user(cred_enter.EMAIL_ADDR, 
@@ -134,8 +130,6 @@ def coinprice(coin_price):
 							time.sleep(1)
 							api_call(cred_enter.COIN, cred_enter.CURRENCY)
 				
-
-
 def mon_run():
 	for cntr, COIN_NAME1, CRNCY1, VALUE0, VALUE in api_call.coin_mon:
 		print(f'\n-----------------------------\n',
@@ -148,10 +142,6 @@ def mon_run():
 			f"COIN = {COIN_NAME1}\n",
 			f"START PRICE = {VALUE0}\n\n",
 			f'-----------------------------\n')
-
-
-
-
 
 # email to sms function
 def notify_user(EMAIL_ADDR, EMAIL_PASS, EMAIL_SRVR, EMAIL_PORT, RECV_ADDR, SUBJECT, BODY):
@@ -551,7 +541,3 @@ def coin_menu():
 				break
 
 coin_menu()
-
-
-
-
