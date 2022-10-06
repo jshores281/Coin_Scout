@@ -1,6 +1,6 @@
 from pycoingecko import CoinGeckoAPI
 from datetime import date
-import time, os, sys, smtplib, datetime, time
+import time, os, sys, smtplib, datetime
 import subprocess, traceback, getpass
 
 
@@ -430,7 +430,6 @@ def mc_price():
 	while True:
 		try:
 			COIN = input("\nENTER CRYPTO-COIN BY ID = [COIN-ID1,COIN-ID2,ect]; EXIT = [PRESS ENTER]: ")
-			COIN = COIN.title()
 			COIN = COIN.split(",")
 			if COIN == ['']:
 				print("\nEnter was pressed. EXITTING TO MENU")

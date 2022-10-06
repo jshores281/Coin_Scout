@@ -54,6 +54,11 @@
 # [X] - if times out then wait & restart
 #
 # [X] - LOOP!
+#
+# [ ] - add more error handling (wrong credentials added (email), wrong coin added, 
+#	email relay server choices and manual add based on email domain used, 
+#	api limit error handling + time out,  
+#
 ###############################################################################
 ###############################################################################
 # free public API to all coins
