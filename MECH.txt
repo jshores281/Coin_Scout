@@ -57,7 +57,9 @@
 #
 # [ ] - add more error handling (wrong credentials added (email), wrong coin added, 
 #	email relay server choices and manual add based on email domain used, 
-#	api limit error handling + time out,  
+#	api limit error handling + time out
+#
+# [ ] - when in coin_scout mon mode. verify coin when asked what coin to monitor
 #
 ###############################################################################
 ###############################################################################

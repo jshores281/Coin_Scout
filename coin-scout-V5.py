@@ -22,25 +22,25 @@ def coinprice(coin_price):
 	S_DTAILS = repr(traceback.format_tb(exc_traceback))
 	#print(S_DTAILS)
 	cntr = 0
-	COIN_NAME3 = coin_price.get(cred_enter.COIN[:])
-	VALUE0 = float(COIN_NAME3.get(cred_enter.CURRENCY[:]))
+	COIN_NAME3 = coin_price.get(cred_coin.COIN[:])
+	VALUE0 = float(COIN_NAME3.get(cred_coin.CURRENCY[:]))
 	while True:
 		# MAKE TIME CHECK VARIABLE
 		time.sleep(1)
-		price1 = coin_price.get(cred_enter.COIN[:])
-		VALUE = price1.get(cred_enter.CURRENCY[:])
+		price1 = coin_price.get(cred_coin.COIN[:])
+		VALUE = price1.get(cred_coin.CURRENCY[:])
 		# find percentage difference or compare to percentage increase 
 
-		if VALUE > VALUE0 + cred_enter.PRICE_POINT:
+		if VALUE > VALUE0 + cred_coin.PRICE_POINT:
 			INC_PRICE = VALUE-VALUE0
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
 				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-INCREASED BY: \n%s or +%s%s \n~~~SELL~~~ \n" % (COIN_NAME2,VALUE0,INC_PRICE,cp,perc)
 			try:
-				coin_price = cg.get_price(ids=cred_enter.COIN, vs_currencies=cred_enter.CURRENCY)
-				COIN_NAME1 = coin_price.get(cred_enter.COIN[:])
-				VALUE0 = COIN_NAME1.get(cred_enter.CURRENCY[:])
+				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
+				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
+				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
 				
 				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n" % (COIN_NAME2, VALUE0) 
 				#STATUS_UPDATE = (f'{PRICE_REPORT}{PRICE_UPDATE}')
@@ -67,16 +67,16 @@ def coinprice(coin_price):
 					file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con313}\n[DETAILS]::{S_DTAILS}\n')
 				print(f'{dis_con313}')
 
-		if VALUE < VALUE0 - cred_enter.PRICE_POINT:
+		if VALUE < VALUE0 - cred_coin.PRICE_POINT:
 			DEC_PRICE = VALUE0-VALUE
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
 				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-DECREASED BY: \n%s or %s%s \n~~~BUY~~~ \n" % (COIN_NAME2,VALUE0,DEC_PRICE,cp,perc)
 			try:
-				coin_price = cg.get_price(ids=cred_enter.COIN, vs_currencies=cred_enter.CURRENCY)
-				COIN_NAME1 = coin_price.get(cred_enter.COIN[:])
-				VALUE0 = COIN_NAME1.get(cred_enter.CURRENCY[:])
+				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
+				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
+				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
 				
 				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n" % (COIN_NAME2, VALUE0)
 				#STATUS_UPDATE = (f'{PRICE_REPORT}{PRICE_UPDATE}')
@@ -110,9 +110,9 @@ def coinprice(coin_price):
 				if cntr % 10==False:
 					try:
 						print(f'-----------------------------\n~~!!~~STARTING PRICE------1\n{COIN_NAME1}\n{VALUE0}')
-						coin_price = cg.get_price(ids=cred_enter.COIN, vs_currencies=cred_enter.CURRENCY)
-						COIN_NAME = coin_price.get(cred_enter.COIN[:])
-						VALUE = COIN_NAME.get(cred_enter.CURRENCY[:])
+						coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
+						COIN_NAME = coin_price.get(cred_coin.COIN[:])
+						VALUE = COIN_NAME.get(cred_coin.CURRENCY[:])
 						print(f'\n~~!!~~UPDATED PRICE------2\n{COIN_NAME1}\n{VALUE0}\n')
 						time.sleep(2)
 					except OSError:
@@ -128,7 +128,7 @@ def coinprice(coin_price):
 						while True:
 							print(f'{dis_con333}')
 							time.sleep(1)
-							api_call(cred_enter.COIN, cred_enter.CURRENCY)
+							api_call(cred_coin.COIN, cred_coin.CURRENCY)
 				
 def mon_run():
 	for cntr, COIN_NAME1, CRNCY1, VALUE0, VALUE in api_call.coin_mon:
@@ -138,7 +138,7 @@ def mon_run():
 			f"\nCOIN NAME = {COIN_NAME1}\n", 
 			f"CURRENCY  = {CRNCY1}\n",
 			f"CURRENT VALUE = {VALUE}\n", 
-			f"+/- PRICE POINT = {cred_enter.PRICE_POINT}\n\n",
+			f"+/- PRICE POINT = {cred_coin.PRICE_POINT}\n\n",
 			f"COIN = {COIN_NAME1}\n",
 			f"START PRICE = {VALUE0}\n\n",
 			f'-----------------------------\n')
@@ -274,21 +274,45 @@ def cred_enter():
 		print("Enter was pressed. Moving to next menu")
 		print(time.sleep(3))
 		os.system('cls')
-		pass
+		cred_coin()
+		
+
+
+
+def cred_coin():
 	print("""
 --------------------------------------
  COIN SCOUT CRYPTO MONITORING SYSTEM 
 --------------------------------------
        ~~ API DATA ENTERY ~~          
 --------------------------------------
-""")	
-	cred_enter.COIN = input("ENTER FULL DIGITAL COIN NAME: ")
-	cred_enter.CURRENCY = input("ENTER CURRENCY ABBREVIATION: ")
-	cred_enter.PRICE_POINT = int(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
-	COIN = cred_enter.COIN
-	CURRENCY = cred_enter.CURRENCY
-	PRICE_POINT = cred_enter.PRICE_POINT
+""")
+	cred_coin.COIN = input("ENTER FULL DIGITAL COIN NAME: ")
+	cred_coin.CURRENCY = input("ENTER CURRENCY ABBREVIATION: ")
+	coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
+	print(coin_price)
+	acc = input("Correct coin returned? Yes[Y]/No[N]: ")
+	coin_acc = acc.upper()
+	if coin_acc == "N":
+		cred_coin()
+	if coin_acc=="Y":
+		pass
+	cred_coin.PRICE_POINT = int(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
+	COIN = cred_coin.COIN
+	CURRENCY = cred_coin.CURRENCY
+	PRICE_POINT = cred_coin.PRICE_POINT
+
 	api_call(COIN, CURRENCY)
+
+
+
+
+
+
+
+
+
+
 # ALL ACCEPTED CRYPTO-COINS + CURRENCIES
 # ADD TO EXPANDABLE HELP MENU IN GUI
 def coin_show():
