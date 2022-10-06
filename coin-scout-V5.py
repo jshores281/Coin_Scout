@@ -388,10 +388,8 @@ def coin_search():
 	while True:
 		try:
 			coinsearch = input("\nSEARCH COINS = [coin1,coin2,ect]; EXIT = [PRESS ENTER]: ")
-			coinsearch = coinsearch.title()
 			coinsearch = coinsearch.split(",")
 			coins = cg.get_coins_list()
-
 			if coinsearch == ['']:
 				print("\nEnter was pressed. EXITTING TO MENU")
 				del coinsearch
