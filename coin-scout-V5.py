@@ -297,7 +297,7 @@ def cred_coin():
 		cred_coin()
 	if coin_acc=="Y":
 		pass
-	cred_coin.PRICE_POINT = int(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
+	cred_coin.PRICE_POINT = float(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
 	COIN = cred_coin.COIN
 	CURRENCY = cred_coin.CURRENCY
 	PRICE_POINT = cred_coin.PRICE_POINT
