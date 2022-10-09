@@ -61,6 +61,11 @@
 #
 # [X] - when in coin_scout mon mode. verify coin when asked what coin to monitor
 #
+# [ ] - make cleaner error logs by except Exception as e: log e to file 
+#
+# [ ] - make credential answer file option (read from file, load per line into 
+#	correct variable in program. THEN auto-confirm)
+#
 ###############################################################################
 ###############################################################################
 # free public API to all coins

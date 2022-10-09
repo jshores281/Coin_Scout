@@ -33,17 +33,25 @@ def coinprice(coin_price):
 
 		if VALUE > VALUE0 + cred_coin.PRICE_POINT:
 			INC_PRICE = VALUE-VALUE0
+			# scientific notation conversion based on decimal place
+			valstr = "{0:e}".format(INC_PRICE)
+			epos = valstr.rfind('e')
+			epon = valstr[epos+1:]
+			exp = abs(int(epon))
+
+			INC_PRICE = (f'{INC_PRICE:.{exp}f}')
+
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
-				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-INCREASED BY: \n%s or +%s%s \n~~~SELL~~~ \n" % (COIN_NAME2,VALUE0,INC_PRICE,cp,perc)
+				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n\n~INCREASED BY:\n%s / +%s%s \n\nACTION:\n~~~SELL~~~ \n" % (COIN_NAME2,VALUE0,INC_PRICE,cp,perc)
 			try:
 				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
 				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
-				
-				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n" % (COIN_NAME2, VALUE0) 
-				#STATUS_UPDATE = (f'{PRICE_REPORT}{PRICE_UPDATE}')
+
+				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time) 
+
 				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
 					f'ATTEMPING TO SEND PRICE ALERT MSG')			
 				
@@ -69,17 +77,25 @@ def coinprice(coin_price):
 
 		if VALUE < VALUE0 - cred_coin.PRICE_POINT:
 			DEC_PRICE = VALUE0-VALUE
+			# scientific notation conversion based on decimal place
+			valstr = "{0:e}".format(DEC_PRICE)
+			epos = valstr.rfind('e')
+			epon = valstr[epos+1:]
+			exp = abs(int(epon))
+
+			DEC_PRICE = (f'{DEC_PRICE:.{exp}f}')
+
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
-				PRICE_REPORT = "\n***%s***\nOriginal value = %s\n\n-DECREASED BY: \n%s or %s%s \n~~~BUY~~~ \n" % (COIN_NAME2,VALUE0,DEC_PRICE,cp,perc)
+				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n\n~DECREASED BY:\n%s / %s%s \n\nACTION:\n~~~BUY~~~\n" % (COIN_NAME2,VALUE0,DEC_PRICE,cp,perc)
 			try:
 				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
 				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
 				
-				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n" % (COIN_NAME2, VALUE0)
-				#STATUS_UPDATE = (f'{PRICE_REPORT}{PRICE_UPDATE}')
+				PRICE_UPDATE = "~\nUPDATING STARTING PRICE:\n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time)
+
 				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
 					f'ATTEMPING TO SEND PRICE ALERT MSG')
 				SUBJECT = str(f"COIN SCOUTING: {COIN_NAME2} \n\n")
@@ -138,7 +154,8 @@ def mon_run():
 			f"\nCOIN NAME = {COIN_NAME1}\n", 
 			f"CURRENCY  = {CRNCY1}\n",
 			f"CURRENT VALUE = {VALUE}\n", 
-			f"+/- PRICE POINT = {cred_coin.PRICE_POINT}\n\n",
+			# scientific notation conversion based on decimal place
+			f"+/- PRICE POINT = {cred_coin.rPRICE_POINT}\n\n",
 			f"COIN = {COIN_NAME1}\n",
 			f"START PRICE = {VALUE0}\n\n",
 			f'-----------------------------\n')
@@ -277,8 +294,6 @@ def cred_enter():
 		cred_coin()
 		
 
-
-
 def cred_coin():
 	print("""
 --------------------------------------
@@ -291,26 +306,29 @@ def cred_coin():
 	cred_coin.CURRENCY = input("ENTER CURRENCY ABBREVIATION: ")
 	coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 	print(coin_price)
+
 	acc = input("Correct coin returned? Yes[Y]/No[N]: ")
 	coin_acc = acc.upper()
 	if coin_acc == "N":
 		cred_coin()
 	if coin_acc=="Y":
 		pass
-	cred_coin.PRICE_POINT = float(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
+	PRICE_POINT = float(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
+	# scientific notation conversion based on decimal place
+	valstr = "{0:e}".format(PRICE_POINT)
+	epos = valstr.rfind('e')
+	epon = valstr[epos+1:]
+	exp = abs(int(epon))
+
+	cred_coin.rPRICE_POINT = (f'{PRICE_POINT:.{exp}f}')
+	print(cred_coin.rPRICE_POINT)
+
 	COIN = cred_coin.COIN
 	CURRENCY = cred_coin.CURRENCY
-	PRICE_POINT = cred_coin.PRICE_POINT
+	cred_coin.PRICE_POINT = PRICE_POINT
+
 
 	api_call(COIN, CURRENCY)
-
-
-
-
-
-
-
-
 
 
 # ALL ACCEPTED CRYPTO-COINS + CURRENCIES
