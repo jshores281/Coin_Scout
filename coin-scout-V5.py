@@ -49,7 +49,9 @@ def coinprice(coin_price):
 				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
 				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
-
+				
+				ct = datetime.datetime.now()
+				cur_time = ct.strftime("%H:%M:%S")
 				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time) 
 
 				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
@@ -94,6 +96,8 @@ def coinprice(coin_price):
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
 				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
 				
+				ct = datetime.datetime.now()
+				cur_time = ct.strftime("%H:%M:%S")
 				PRICE_UPDATE = "~\nUPDATING STARTING PRICE:\n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time)
 
 				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
@@ -321,15 +325,12 @@ def cred_coin():
 	exp = abs(int(epon))
 
 	cred_coin.rPRICE_POINT = (f'{PRICE_POINT:.{exp}f}')
-	print(cred_coin.rPRICE_POINT)
+	#print(cred_coin.rPRICE_POINT)
 
 	COIN = cred_coin.COIN
 	CURRENCY = cred_coin.CURRENCY
 	cred_coin.PRICE_POINT = PRICE_POINT
-
-
 	api_call(COIN, CURRENCY)
-
 
 # ALL ACCEPTED CRYPTO-COINS + CURRENCIES
 # ADD TO EXPANDABLE HELP MENU IN GUI
@@ -459,6 +460,11 @@ def coin_search():
 				time.sleep(1)
 				coin_search()
 				break
+		except ValueError as e:
+			print(f'\nAPI call limits exceeded, error message: \n\n{e}\n\nTiming out for 20 seconds.')
+			time.sleep(20)
+			coin_search()
+
 
 def mc_price():
 	os.system("cls")
