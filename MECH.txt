@@ -55,9 +55,11 @@
 #
 # [X] - LOOP!
 #
-# [ ] - add more error handling (wrong credentials added (email), wrong coin added, 
-#	email relay server choices and manual add based on email domain used, 
-#	api limit error handling + time out
+# [ ] - add more error handling (
+# 	[ ] - wrong credentials added (email) (make cleaner)
+#	[X] - wrong coin added, 
+# 	[ ] - email smtp server choices and manual add based on email domain used, (options)
+# 	[X] - api limit error handling + time out
 #
 # [X] - when in coin_scout mon mode. verify coin when asked what coin to monitor
 #
@@ -65,6 +67,10 @@
 #
 # [ ] - make credential answer file option (read from file, load per line into 
 #	correct variable in program. THEN auto-confirm)
+#
+# [ ] - choose and show alert mode in monitor mode UI (email if choosen email or cell+sms-gateway)
+#
+# [ ] - 
 #
 ###############################################################################
 ###############################################################################
