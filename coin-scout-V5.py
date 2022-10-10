@@ -44,7 +44,12 @@ def coinprice(coin_price):
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
-				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n\n~INCREASED BY:\n%s / +%s%s \n\nACTION:\n~~~SELL~~~ \n" % (COIN_NAME2,VALUE0,INC_PRICE,cp,perc)
+				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n"  % (COIN_NAME2,VALUE0)
+
+			ct = datetime.datetime.now()
+			cur_time = ct.strftime("%H:%M:%S")
+			PRICE_DIFF = "INCREASED BY:\n%s / +%s%s \n Timestamp = %s \n\nACTION:\n~~~SELL~~~ \n\n" % (INC_PRICE,cp,perc,cur_time)
+
 			try:
 				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
@@ -52,13 +57,13 @@ def coinprice(coin_price):
 				
 				ct = datetime.datetime.now()
 				cur_time = ct.strftime("%H:%M:%S")
-				PRICE_UPDATE = "\nUPDATING STARTING PRICE: \n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time) 
+				PRICE_UPDATE = "\nUPDATED VALUE:\n%s \n\n" % (VALUE0) 
 
-				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
+				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}{PRICE_DIFF}\n-----------------------------\n',
 					f'ATTEMPING TO SEND PRICE ALERT MSG')			
 				
 				SUBJECT = str("COIN SCOUTING: %s \n\n" % COIN_NAME2)
-				BODY = str(PRICE_REPORT + PRICE_UPDATE)
+				BODY = str(PRICE_REPORT + PRICE_UPDATE + PRICE_DIFF)
 				notify_user(cred_enter.EMAIL_ADDR, 
 							cred_enter.EMAIL_PASS, 
 							cred_enter.EMAIL_SRVR, 
@@ -90,20 +95,23 @@ def coinprice(coin_price):
 			cp = float('{0:.3f}'.format(((float(VALUE)-float(VALUE0))/float(VALUE0))*100))
 			perc = str("%")
 			for COIN_NAME2 in coin_price:
-				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n\n~DECREASED BY:\n%s / %s%s \n\nACTION:\n~~~BUY~~~\n" % (COIN_NAME2,VALUE0,DEC_PRICE,cp,perc)
+				PRICE_REPORT = "COIN MONITORING:\n***%s***\n\nOriginal value:\n%s\n" % (COIN_NAME2,VALUE0)
+
+			ct = datetime.datetime.now()
+			cur_time = ct.strftime("%H:%M:%S")
+			PRICE_DIFF = "DECREASED BY:\n%s / %s%s\n Timestamp = %s \n\nACTION:\n~~~BUY~~~ \n\n" % (DEC_PRICE,cp,perc,cur_time)
+			
 			try:
 				coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 				COIN_NAME1 = coin_price.get(cred_coin.COIN[:])
 				VALUE0 = COIN_NAME1.get(cred_coin.CURRENCY[:])
 				
-				ct = datetime.datetime.now()
-				cur_time = ct.strftime("%H:%M:%S")
-				PRICE_UPDATE = "~\nUPDATING STARTING PRICE:\n%s = %s\n%s" % (COIN_NAME2, VALUE0, cur_time)
+				PRICE_UPDATE = "\nUPDATED VALUE:\n%s \n\n" % (VALUE0)
 
-				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}\n-----------------------------\n',
+				print(f'-----------------------------\n{PRICE_REPORT}{PRICE_UPDATE}{PRICE_DIFF}\n-----------------------------\n',
 					f'ATTEMPING TO SEND PRICE ALERT MSG')
 				SUBJECT = str(f"COIN SCOUTING: {COIN_NAME2} \n\n")
-				BODY = str(PRICE_REPORT + PRICE_UPDATE)
+				BODY = str(PRICE_REPORT + PRICE_UPDATE + PRICE_DIFF)
 				notify_user(cred_enter.EMAIL_ADDR, 
 							cred_enter.EMAIL_PASS, 
 							cred_enter.EMAIL_SRVR, 
@@ -129,11 +137,11 @@ def coinprice(coin_price):
 
 				if cntr % 10==False:
 					try:
-						print(f'-----------------------------\n~~!!~~STARTING PRICE------1\n{COIN_NAME1}\n{VALUE0}')
+						print(f'-----------------------------\n\n~ORIGINAL VALUE--------------\n{COIN_NAME1}\n{VALUE0}')
 						coin_price = cg.get_price(ids=cred_coin.COIN, vs_currencies=cred_coin.CURRENCY)
 						COIN_NAME = coin_price.get(cred_coin.COIN[:])
 						VALUE = COIN_NAME.get(cred_coin.CURRENCY[:])
-						print(f'\n~~!!~~UPDATED PRICE------2\n{COIN_NAME1}\n{VALUE0}\n')
+						print(f'\n~UPDATED VALUE---------------\n{COIN_NAME1}\n{VALUE0}\n')
 						time.sleep(2)
 					except OSError:
 						dis_con333 = ("CONNECTION DISCONNECTED: 333~~RETRYING CONNECTION~~")
@@ -159,9 +167,9 @@ def mon_run():
 			f"CURRENCY  = {CRNCY1}\n",
 			f"CURRENT VALUE = {VALUE}\n", 
 			# scientific notation conversion based on decimal place
-			f"+/- PRICE POINT = {cred_coin.rPRICE_POINT}\n\n",
+			f"+/- VALUE DIFF TRIGGER = {cred_coin.rPRICE_POINT}\n\n",
 			f"COIN = {COIN_NAME1}\n",
-			f"START PRICE = {VALUE0}\n\n",
+			f"ORIGINAL VALUE = {VALUE0}\n\n",
 			f'-----------------------------\n')
 
 # email to sms function
@@ -317,7 +325,7 @@ def cred_coin():
 		cred_coin()
 	if coin_acc=="Y":
 		pass
-	PRICE_POINT = float(input("ENTER YOUR +/- DEVIATION PRICE POINT: "))
+	PRICE_POINT = float(input("ENTER YOUR +/- DEVIATION VALUE POINT: "))
 	# scientific notation conversion based on decimal place
 	valstr = "{0:e}".format(PRICE_POINT)
 	epos = valstr.rfind('e')
