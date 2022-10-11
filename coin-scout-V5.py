@@ -70,17 +70,18 @@ def coinprice(coin_price):
 							cred_enter.EMAIL_PORT, 
 							cred_enter.RECV_ADDR, 
 							SUBJECT, BODY)
-			except OSError:
+			except (OSError, ValueError) as e:
 				dis_con313 = ("DISCONNECTED: 313~~RETRYING CONNECTION~~")
 				exc_type, exc_value, exc_traceback = sys.exc_info()
-				S_DTAILS = repr(traceback.format_tb(exc_traceback))
+				#S_DTAILS = repr(traceback.format_tb(exc_traceback))
+				S_DTAILS = e
 				ct = datetime.datetime.now()
 				cur_time = ct.strftime("%H:%M:%S")
 				today = date.today()
 				d1 = today.strftime("%m/%d/%Y")
 				with open(FILE, "a") as file:
 					file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con313}\n[DETAILS]::{S_DTAILS}\n')
-				print(f'{dis_con313}')
+				print(f'{dis_con313}\n\n{e}')
 
 		if VALUE < VALUE0 - cred_coin.PRICE_POINT:
 			DEC_PRICE = VALUE0-VALUE
@@ -118,17 +119,19 @@ def coinprice(coin_price):
 							cred_enter.EMAIL_PORT, 
 							cred_enter.RECV_ADDR, 
 							SUBJECT, BODY)
-			except OSError:
+			except (OSError, ValueError) as e:
 				dis_con323 = ("DISCONNECTED: 323~~RETRYING CONNECTION~~")
 				exc_type, exc_value, exc_traceback = sys.exc_info()
-				S_DTAILS = repr(traceback.format_tb(exc_traceback))
+				#S_DTAILS = repr(traceback.format_tb(exc_traceback))
+				S_DTAILS = e
 				ct = datetime.datetime.now()
 				cur_time = ct.strftime("%H:%M:%S")
 				today = date.today()
 				d1 = today.strftime("%m/%d/%Y")
 				with open(FILE, "a") as file:
 					file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con323}\n[DETAILS]::{S_DTAILS}\n')
-				print(f'{dis_con323}')
+				print(f'{dis_con323}\n\n{e}')
+
 		for COIN_NAME1 in coin_price:
 			for CRNCY1 in price1:
 				yield cntr, COIN_NAME1, CRNCY1, VALUE0, VALUE
@@ -143,10 +146,11 @@ def coinprice(coin_price):
 						VALUE = COIN_NAME.get(cred_coin.CURRENCY[:])
 						print(f'\n~UPDATED VALUE---------------\n{COIN_NAME1}\n{VALUE0}\n')
 						time.sleep(2)
-					except OSError:
+					except (OSError, ValueError) as e:
 						dis_con333 = ("CONNECTION DISCONNECTED: 333~~RETRYING CONNECTION~~")
 						exc_type, exc_value, exc_traceback = sys.exc_info()
-						S_DTAILS = repr(traceback.format_tb(exc_traceback))
+						#S_DTAILS = repr(traceback.format_tb(exc_traceback))
+						S_DTAILS = e
 						ct = datetime.datetime.now()
 						cur_time = ct.strftime("%H:%M:%S")
 						today = date.today()
@@ -154,23 +158,38 @@ def coinprice(coin_price):
 						with open(FILE, "a") as file:
 							file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con333}\n[DETAILS]::{S_DTAILS}\n')
 						while True:
-							print(f'{dis_con333}')
+							print(f'{dis_con333}\n\n{e}')
 							time.sleep(1)
 							api_call(cred_coin.COIN, cred_coin.CURRENCY)
 				
 def mon_run():
-	for cntr, COIN_NAME1, CRNCY1, VALUE0, VALUE in api_call.coin_mon:
-		print(f'\n-----------------------------\n',
-			f'\nCOIN SCOUT: MONITOR-MODE\n\n'
-			f"~COIN LIST\n"
-			f"\nCOIN NAME = {COIN_NAME1}\n", 
-			f"CURRENCY  = {CRNCY1}\n",
-			f"CURRENT VALUE = {VALUE}\n", 
-			# scientific notation conversion based on decimal place
-			f"+/- VALUE DIFF TRIGGER = {cred_coin.rPRICE_POINT}\n\n",
-			f"COIN = {COIN_NAME1}\n",
-			f"ORIGINAL VALUE = {VALUE0}\n\n",
-			f'-----------------------------\n')
+	try:
+		for cntr, COIN_NAME1, CRNCY1, VALUE0, VALUE in api_call.coin_mon:
+			print(f'\n-----------------------------\n',
+				f'\nCOIN SCOUT: MONITOR-MODE\n\n'
+				f"~COIN LIST\n"
+				f"\nCOIN NAME = {COIN_NAME1}\n", 
+				f"CURRENCY  = {CRNCY1}\n",
+				f"CURRENT VALUE = {VALUE}\n", 
+				# scientific notation conversion based on decimal place
+				f"+/- VALUE DIFF TRIGGER = {cred_coin.rPRICE_POINT}\n\n",
+				f"COIN = {COIN_NAME1}\n",
+				f"ORIGINAL VALUE = {VALUE0}\n\n",
+				f'-----------------------------\n')
+
+	except (OSError, ValueError) as e:
+		dis_con343 = ("CONNECTION DISCONNECTED: 343~~RETRYING CONNECTION~~")
+		exc_type, exc_value, exc_traceback = sys.exc_info()
+		#S_DTAILS = repr(traceback.format_tb(exc_traceback))
+		S_DTAILS = e
+		ct = datetime.datetime.now()
+		cur_time = ct.strftime("%H:%M:%S")
+		today = date.today()
+		d1 = today.strftime("%m/%d/%Y")
+		with open(FILE, "a") as file:
+			file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con343}\n[DETAILS]::{S_DTAILS}\n')
+		print(f'{dis_con343}\n\n{e}')
+
 
 # email to sms function
 def notify_user(EMAIL_ADDR, EMAIL_PASS, EMAIL_SRVR, EMAIL_PORT, RECV_ADDR, SUBJECT, BODY):
@@ -213,10 +232,11 @@ def api_call(COIN, CURRENCY):
 			coin_price = cg.get_price(ids=COIN, vs_currencies=CURRENCY)
 			api_call.coin_mon = coinprice(coin_price)
 			mon_run()
-	except OSError:
-		dis_con2 = ("DISCONNECTED: 2~~NO INTERNET CONNECTION~~")
+	except (OSError, ValueError) as e:
+		dis_con2 = ("DISCONNECTED: 2~~NO CONNECTION~~")
 		exc_type, exc_value, exc_traceback = sys.exc_info()
-		S_DTAILS = repr(traceback.format_tb(exc_traceback))	
+		#S_DTAILS = repr(traceback.format_tb(exc_traceback))
+		S_DTAILS = e
 		#all_dtails = traceback.print_stack()	
 		ct = datetime.datetime.now()
 		cur_time = ct.strftime("%H:%M:%S")
@@ -225,7 +245,7 @@ def api_call(COIN, CURRENCY):
 		with open(FILE, "a") as file:
 			file.write(f'[{d1}]::[{cur_time}]::[COM=CONNECTION-STATUS]~~~~ERROR == {dis_con2}\n[DETAILS]::{S_DTAILS}\n')#[ALL-DETAILS]::{all_dtails}')
 		while True:
-			print(f"{dis_con2}")
+			print(f"{dis_con2}\n\n{e}")
 			time.sleep(1)
 			api_call(COIN, CURRENCY)
 			break
